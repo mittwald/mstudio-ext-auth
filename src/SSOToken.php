@@ -3,7 +3,12 @@
 namespace Mittwald\MStudio\Authentication;
 
 use DateTime;
+use SensitiveParameter;
 
+/**
+ * Represents an SSO access token, optionally grouped with a refresh token and
+ * an expiration date.
+ */
 readonly class SSOToken
 {
     private string $accessToken;
@@ -12,11 +17,15 @@ readonly class SSOToken
 
     private ?DateTime $expiresAt;
 
-    public function __construct(string $accessToken, ?string $refreshToken = null, ?DateTime $expiresAt = null)
+    public function __construct(
+        #[SensitiveParameter] string  $accessToken,
+        #[SensitiveParameter] ?string $refreshToken = null,
+        ?DateTime                     $expiresAt = null
+    )
     {
-        $this->accessToken = $accessToken;
+        $this->accessToken  = $accessToken;
         $this->refreshToken = $refreshToken;
-        $this->expiresAt = $expiresAt;
+        $this->expiresAt    = $expiresAt;
     }
 
     public function getAccessToken(): string

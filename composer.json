@@ -1,20 +1,21 @@
 {
-    "name": "mittwald/mstudio-ext-auth",
-    "description": "Library for authenticating users in mittwald mStudio extensions",
-    "type": "library",
-    "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Mittwald\\MStudio\\Authentication\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Martin Helmich",
-            "email": "m.helmich@mittwald.de"
-        }
-    ],
-    "require": {
-        "mittwald/api-client": "^2.1"
+  "name": "mittwald/mstudio-ext-auth",
+  "description": "Library for authenticating users in mittwald mStudio extensions",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Mittwald\\MStudio\\Authentication\\": "src/"
     }
+  },
+  "authors": [
+    {
+      "name": "Martin Helmich",
+      "email": "m.helmich@mittwald.de"
+    }
+  ],
+  "require": {
+    "mittwald/api-client": "^2.1",
+    "psr/log": "^3.0"
+  }
 }

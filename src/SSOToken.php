@@ -3,11 +3,6 @@
 namespace Mittwald\MStudio\Authentication;
 
 use DateTime;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Id;
-use Symfony\Bridge\Doctrine\Types\UuidType;
-use Symfony\Component\Uid\Uuid;
 
 readonly class SSOToken
 {

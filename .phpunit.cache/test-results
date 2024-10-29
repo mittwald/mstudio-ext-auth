@@ -1,0 +1,1 @@
+{"version":1,"defects":{"Mittwald\\MStudio\\Authentication\\AuthenticationServiceTest::authenticateUsesRetrievalKey":8},"times":{"Mittwald\\MStudio\\Authentication\\AuthenticationServiceTest::authenticateUsesRetrievalKey":0.009,"Mittwald\\MStudio\\Authentication\\AuthenticationServiceTest::throwsAuthenticationErrorOnUnexpectedResponse":0.001}}

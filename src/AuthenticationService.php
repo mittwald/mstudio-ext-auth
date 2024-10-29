@@ -3,9 +3,12 @@
 namespace Mittwald\MStudio\Authentication;
 
 use GuzzleHttp\Exception\GuzzleException;
+use InvalidArgumentException;
 use Mittwald\ApiClient\Error\UnexpectedResponseException;
 use Mittwald\ApiClient\Generated\V2\Clients\User\AuthenticateWithAccessTokenRetrievalKey\AuthenticateWithAccessTokenRetrievalKeyRequest;
 use Mittwald\ApiClient\Generated\V2\Clients\User\AuthenticateWithAccessTokenRetrievalKey\AuthenticateWithAccessTokenRetrievalKeyRequestBody;
+use Mittwald\ApiClient\Generated\V2\Clients\User\RefreshSession\RefreshSessionRequest;
+use Mittwald\ApiClient\Generated\V2\Clients\User\RefreshSession\RefreshSessionRequestBody;
 use Mittwald\ApiClient\MittwaldAPIV2Client;
 use Psr\Log\LoggerInterface;
 use SensitiveParameter;
@@ -57,6 +60,43 @@ class AuthenticationService
             );
         } catch (UnexpectedResponseException $error) {
             throw new AuthenticationError('Authentication failed: ' . $error->response->getBody()->getContents(), previous: $error);
+        }
+    }
+
+    /**
+     * Refreshes an access token.
+     *
+     * Uses the refresh token stored in an SSOToken object to exchange the
+     * actual access token with a fresh one.
+     *
+     * @param SSOToken $token The old token object
+     * @return SSOToken An updated token object with new tokens
+     * @throws AuthenticationError
+     * @throws GuzzleException
+     */
+    public function refresh(SSOToken $token): SSOToken
+    {
+        $refreshToken = $token->getRefreshToken();
+        if (is_null($refreshToken)) {
+            throw new InvalidArgumentException("token did not contain a refresh token");
+        }
+
+        $refreshRequest = new RefreshSessionRequest(
+            new RefreshSessionRequestBody(
+                refreshToken: $refreshToken,
+            )
+        );
+
+        try {
+            $refreshResponse = $this->client->user()->refreshSession($refreshRequest)->getBody();
+
+            return new SSOToken(
+                accessToken: $refreshResponse->getToken(),
+                refreshToken: $refreshResponse->getRefreshToken(),
+                expiresAt: $refreshResponse->getExpiresAt(),
+            );
+        } catch (UnexpectedResponseException $error) {
+            throw new AuthenticationError('refresh failed', previous: $error);
         }
     }
 
